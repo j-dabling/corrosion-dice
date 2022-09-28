@@ -1,10 +1,12 @@
 // use std::io;
 mod command_line;
+mod command_functions;
 use command_line::command::Command;
-use command_line::command_line::CommandLine;
+use command_functions::command_functions::roll20;
+// use command_line::command_line::CommandLine;
 
 fn main() {
-    let test_command = Command {
+    /* let test_command = Command {
         keyword: String::from("bagels"),
         callback: test_function,
     };
@@ -16,10 +18,11 @@ fn main() {
         command_list: test_command_list,
         prompt: String::from("enter your input: "),
     };
-    test_cli.input_cycle();
+    test_cli.input_cycle(); */
 
+    roll20();
 }
 
-fn test_function() {
+/* fn test_function() {
     println!("bagels? Where?!");
-}
+} */

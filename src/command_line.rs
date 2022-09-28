@@ -15,7 +15,8 @@ pub mod command {
 		// 	If no match is found, false is returned, used by the CommandLine object
 		// 	to keep looking.
 		pub fn verify(&self, args: Vec<String>) -> bool {
-			println!("keyword for command: {self}, args being considered = {:?}", args);
+			// remove this crusty debug stuff!!
+			// println!("keyword for command: {self}, args being considered = {:?}", args);
 			if args[0].to_lowercase() == self.keyword {
 				(self.callback)();
 				return true
@@ -61,7 +62,8 @@ pub mod command_line {
 			}
 			// Now that we have a vector of strings, we can iterate through our commands and verify each in turn
 			for command in &self.command_list {
-				println!("{command}");
+				//remove this crusty debug stuff!!!
+				// println!("{command}");
 				command.verify(user_input.clone());
 			}
 
