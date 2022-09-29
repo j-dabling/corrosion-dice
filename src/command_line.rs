@@ -35,6 +35,8 @@ pub mod command {
 
 pub mod command_line {
 	use std::io::Write;
+
+use colored::Colorize;
 	pub struct CommandLine {
 		pub command_list: Vec<crate::Command>,
 		pub prompt: String,
@@ -54,19 +56,32 @@ pub mod command_line {
 			user_input
 		}
 		pub fn input_cycle(&self) {
-			let initial_user_input = self.get_input();
-			let intermediate_user_input = initial_user_input.split(' ');
-			let mut user_input = Vec::new();
-			for word in intermediate_user_input {
-				user_input.push(String::from(word));
+			loop {
+				let initial_user_input = self.get_input();
+				let intermediate_user_input = initial_user_input.split(' ');
+				let mut user_input = Vec::new();
+				let mut command_found = false;
+				
+				for word in intermediate_user_input {
+					user_input.push(String::from(word));
+				}
+				// Now that we have a vector of strings, we can iterate through our commands and verify each in turn
+				// first, check if we should quit
+				if user_input[0] == "quit" || user_input[0] == "exit" || user_input[0] == "q" {
+					break;
+				}
+				for command in &self.command_list {
+					//remove this crusty debug stuff!!!
+					// println!("{command}");
+					command_found = command.verify(user_input.clone());
+					if command_found {
+						break
+					}
+				}
+				if !command_found {
+					println!("{}", "command not found".red())
+				}
 			}
-			// Now that we have a vector of strings, we can iterate through our commands and verify each in turn
-			for command in &self.command_list {
-				//remove this crusty debug stuff!!!
-				// println!("{command}");
-				command.verify(user_input.clone());
-			}
-
 		}
 	}
 }

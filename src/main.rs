@@ -2,7 +2,8 @@
 mod command_line;
 mod command_functions;
 use command_line::command::Command;
-use command_functions::command_functions::rolln;
+use command_line::command_line::CommandLine;
+use command_functions::command_functions::{rolln, roll20};
 // use command_line::command_line::CommandLine;
 
 fn main() {
@@ -19,10 +20,27 @@ fn main() {
         prompt: String::from("enter your input: "),
     };
     test_cli.input_cycle(); */
-
-    rolln(6);
+    let cl = setup_command_line();
+    cl.input_cycle();
 }
 
 /* fn test_function() {
     println!("bagels? Where?!");
 } */
+
+// hooks up functions and commands
+fn setup_command_line() -> CommandLine {
+    // instantiate the command line
+    let mut cl = CommandLine {
+        command_list: Vec::new(),
+        prompt: String::from("> "),
+    };
+    // instantiate the commands
+    let roll20_command = Command {
+        keyword: String::from("roll"),
+        callback: roll20,
+    };
+    // connect them
+    cl.command_list.push(roll20_command);
+    cl
+}
