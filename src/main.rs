@@ -3,10 +3,12 @@ mod command_line;
 mod command_functions;
 use command_line::command::Command;
 use command_line::command_line::CommandLine;
-use command_functions::command_functions::{rolln, roll20};
+use command_functions::command_functions::{/* rolln,  */roll20, clear};
 // use command_line::command_line::CommandLine;
 
 fn main() {
+    // clear the display initially
+    std::process::Command::new("clear").status().expect("couldn't");
     /* let test_command = Command {
         keyword: String::from("bagels"),
         callback: test_function,
@@ -40,7 +42,12 @@ fn setup_command_line() -> CommandLine {
         keyword: String::from("roll"),
         callback: roll20,
     };
+    let clear_command = Command {
+        keyword: String::from("clear"),
+        callback: clear,
+    };
     // connect them
     cl.command_list.push(roll20_command);
+    cl.command_list.push(clear_command);
     cl
 }

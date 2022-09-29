@@ -31,6 +31,17 @@ pub mod command {
 			write!(f, "{}", self.keyword)
 		}
 	}
+
+	pub struct ArgCommand {
+		pub keyword: String, // word to recognize the command 
+		pub callback: crate::command_line::Callback, // the function to be executed
+		pub default_argument: u64, // may need to be changed to String to handle string arguments
+	}
+	impl ArgCommand {
+		pub fn verify() {
+
+		}
+	}
 }
 
 pub mod command_line {
@@ -70,6 +81,7 @@ use colored::Colorize;
 				if user_input[0] == "quit" || user_input[0] == "exit" || user_input[0] == "q" {
 					break;
 				}
+				
 				for command in &self.command_list {
 					//remove this crusty debug stuff!!!
 					// println!("{command}");

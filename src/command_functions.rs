@@ -79,4 +79,8 @@ pub mod command_functions {
 			return roll.to_string()
 		}
 	}
+
+	pub fn clear() {
+		std::process::Command::new("clear").status().expect("couldn't");
+	}
 }
