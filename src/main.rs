@@ -2,7 +2,7 @@
 mod command_line;
 mod command_functions;
 use command_line::command::Command;
-use command_functions::command_functions::roll20;
+use command_functions::command_functions::rolln;
 // use command_line::command_line::CommandLine;
 
 fn main() {
@@ -20,7 +20,7 @@ fn main() {
     };
     test_cli.input_cycle(); */
 
-    roll20();
+    rolln(6);
 }
 
 /* fn test_function() {
