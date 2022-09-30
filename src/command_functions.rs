@@ -3,34 +3,7 @@ pub mod command_functions {
 	use std::io::Write;
 	use rand::Rng;
 	use colored::Colorize;
-	// Rolls a random number between 1 and 20, putting the result to the screen in a cool-looking way
-	pub fn roll20() {
-		print!("{}\r", "rolling...".black());
-		std::io::stdout().flush().expect("couldn't flush the display");
-		thread::sleep(time::Duration::from_millis(500));
-		// This is the number of times that the 'die' will change before settling on the final result
-		let target = rand::thread_rng().gen_range(4..=20);
-		let mut i = 0;
-		while i < target {
-			let temp_result = rand::thread_rng().gen_range(1..=20);
-			print!("{} {} {} {}           \r",
-			"rolling...".black(),
-			"[".white(),
-			dynamic_color(temp_result, 20),
-			"]".white()); // 20 hardcoded will have to change for rolln
-			std::io::stdout().flush().expect("couldn't flush the display");
-			thread::sleep(time::Duration::from_millis(i * 30));
-			i += 1;
-		}
-		let final_result = rand::thread_rng().gen_range(1..=20); // generate random integer between 1 and 20
-		println!("{} {} {} {}                 ",
-		"result: ".blue().bold(),
-		"[".white().bold(),
-		dynamic_color(final_result, 20),
-		"]".white().bold());
-		// the extra spaces are to make sure to overwrite the previous output
-	}
-
+	// Roll a number between 1 and n, passed in as args[1]
 	pub fn rolln(args: Vec<String>) {
 		assert!(args.len() > 1); // We need to make sure that our vector is big enough
 		let n_string = &args[1]; 
@@ -47,9 +20,9 @@ pub mod command_functions {
 			let temp_result = rand::thread_rng().gen_range(1..=n);
 			print!("{} {} {} {}           \r",
 			"rolling...".black(),
-			"[".white(),
+			"[".white().dimmed(),
 			dynamic_color(temp_result, n), // pass n as max
-			"]".white());
+			"]".white().dimmed());
 			std::io::stdout().flush().expect("couldn't flush the display");
 			thread::sleep(time::Duration::from_millis(i * 30));
 			i += 1;
@@ -85,5 +58,20 @@ pub mod command_functions {
 
 	pub fn clear() {
 		std::process::Command::new("clear").status().expect("couldn't");
+	}
+
+	pub fn display_help() {
+		println!("{0:^13}|   {1:^20}   ", "Command".bold().magenta(), "Purpose".bold().magenta());
+		println!("{0:^13}|", "");
+		println!("{0:^13}|  clears the screen.", "clear".bold().green());
+		println!("{0:^13}|", "");
+		println!("{0:^13}|  exits the program. \"{1}\" will also work.", "exit".bold().green(), "quit".bold().green());
+		println!("{0:^13}|", "");
+		println!("{0:^13}|  displays this incredibly helpful screen.", "help".bold().green());
+		println!("{0:^13}|", "");
+		println!("{0:>8} {1:<4}|  rolls a die with {1} sides.
+{2:^13}|     If no arguments are provided (i.e. you type \"roll\\n\"),
+{2:^13}|     it defaults to a d20.", "roll".bold().green(), "n".bold().blue(), "");
+
 	}
 }
