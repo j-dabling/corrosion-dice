@@ -1,10 +1,8 @@
-// use std::io;
 mod command_line;
 mod command_functions;
 use command_line::command::{Command, ArgCommand};
 use command_line::command_line::CommandLine;
 use command_functions::command_functions::{rolln, clear, display_help};
-// use command_line::command_line::CommandLine;
 
 fn main() {
     // clear the display initially
@@ -25,10 +23,6 @@ fn main() {
     let cl = setup_command_line();
     cl.input_cycle();
 }
-
-/* fn test_function() {
-    println!("bagels? Where?!");
-} */
 
 // hooks up functions and commands
 fn setup_command_line() -> CommandLine {
