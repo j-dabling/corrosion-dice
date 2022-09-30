@@ -31,7 +31,10 @@ pub mod command_functions {
 		// the extra spaces are to make sure to overwrite the previous output
 	}
 
-	pub fn rolln(n: u64) {
+	pub fn rolln(args: Vec<String>) {
+		assert!(args.len() > 1); // We need to make sure that our vector is big enough
+		let n_string = &args[1]; 
+		let n = n_string.parse().unwrap();
 		print!("{}\r", "rolling...".black());
 		std::io::stdout().flush().expect("couldn't flush the display");
 		thread::sleep(time::Duration::from_millis(500));

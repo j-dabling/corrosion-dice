@@ -1,4 +1,5 @@
 type Callback = fn();
+type ArgCallback = fn(args: Vec<String>); // Argument-based callbacks will have to do argument parsing
 pub mod command {
 	use std::fmt;
 	// Holds our command class attributes.
@@ -15,8 +16,6 @@ pub mod command {
 		// 	If no match is found, false is returned, used by the CommandLine object
 		// 	to keep looking.
 		pub fn verify(&self, args: Vec<String>) -> bool {
-			// remove this crusty debug stuff!!
-			// println!("keyword for command: {self}, args being considered = {:?}", args);
 			if args[0].to_lowercase() == self.keyword {
 				(self.callback)();
 				return true
@@ -34,12 +33,22 @@ pub mod command {
 
 	pub struct ArgCommand {
 		pub keyword: String, // word to recognize the command 
-		pub callback: crate::command_line::Callback, // the function to be executed
-		pub default_argument: u64, // may need to be changed to String to handle string arguments
+		pub callback: crate::command_line::ArgCallback, // the function to be executed
+		pub default_arguments: Vec<String>, // must be handled the same way as any other arguments
 	}
 	impl ArgCommand {
-		pub fn verify() {
-
+		pub fn verify(&self, args: Vec<String>) -> bool {
+			// args includes the first word in the command string
+			if args[0].to_lowercase() == self.keyword {
+				if args.len() > 1 { // If another argument was passed
+					(self.callback)(args);
+				}
+				else if args.len() == 1 {
+					(self.callback)(self.default_arguments.clone());
+				}
+				return true
+			}
+			return false
 		}
 	}
 }
@@ -48,8 +57,12 @@ pub mod command_line {
 	use std::io::Write;
 
 use colored::Colorize;
+
 	pub struct CommandLine {
+		// Two seperate command lists is a quick and dirty solution
+		// I don't want to deal with inheritance in Rust.
 		pub command_list: Vec<crate::Command>,
+		pub arg_command_list: Vec<crate::ArgCommand>,
 		pub prompt: String,
 	}
 	impl CommandLine {
@@ -81,11 +94,21 @@ use colored::Colorize;
 				if user_input[0] == "quit" || user_input[0] == "exit" || user_input[0] == "q" {
 					break;
 				}
-				
+				// check all of our commands
 				for command in &self.command_list {
-					//remove this crusty debug stuff!!!
-					// println!("{command}");
 					command_found = command.verify(user_input.clone());
+					if command_found {
+						break
+					}
+				}
+				// move on to the next iteration if we found something
+				if command_found {
+					continue;
+				}
+				// if not, check our argcommands
+				for arg_command in &self.arg_command_list {
+
+					command_found = arg_command.verify(user_input.clone());
 					if command_found {
 						break
 					}
