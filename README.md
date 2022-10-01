@@ -11,7 +11,7 @@ When run, **Corrosion Dice** supplies the user with a minimal command-line-type 
 
 Watch me demo the software:
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://www.youtube.com/watch?v=JYtV8jU1zj8&list=PLqeqiJHJj3h90DKXu7ardmH00Nbi8Ukmr&index=1)
 
 # Development Environment
 
@@ -28,6 +28,7 @@ For this project, I used the `rand` crate to generate random numbers and the `co
 * [Rust By Example](https://doc.rust-lang.org/stable/rust-by-example)
 * [Programming-Idioms (specifically Idiom #45)](https://programming-idioms.org/)
 * [*Lets Get Rusty*, a Rust tutorial YouTube channel](https://www.youtube.com/c/LetsGetRusty)
+
 # Future Work
 
 Sometime in the future, I would like to further my Rust knowledge by implementing the following features:
