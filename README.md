@@ -23,7 +23,6 @@ Essentially, Rust is a brutally fast language that removes the risk of segmentat
 For this project, I used the `rand` crate to generate random numbers and the `colored` crate to make the output look nice.
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
 * ["The book" (official rust guide)](https://doc.rust-lang.org/book)
 * [Rust By Example](https://doc.rust-lang.org/stable/rust-by-example)
 * [Programming-Idioms (specifically Idiom #45)](https://programming-idioms.org/)
@@ -33,6 +32,6 @@ For this project, I used the `rand` crate to generate random numbers and the `co
 
 Sometime in the future, I would like to further my Rust knowledge by implementing the following features:
 * Syntax highlighting for commands
-* Multiple color themes ( I think a black/red/white would look really cool, as well as fit with the theme of Rust)
+* Multiple color themes (I think a black/red/white would look really cool, as well as fit with the theme of Rust)
 * The option to roll multiple dice at once (I implemented this in the Python version, but didn't have time to add it in this initial release)
 * The option to roll any dice with advantage or disadvantage (see [dndbeyond.com](https://www.dndbeyond.com/sources/basic-rules/using-ability-scores#AdvantageandDisadvantage))
