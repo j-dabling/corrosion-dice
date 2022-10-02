@@ -5,10 +5,11 @@ use command_line::command_line::CommandLine;
 use command_functions::command_functions::{rolln, clear, display_help};
 
 fn main() {
-    // clear the display initially
+/*     // clear the display initially
     std::process::Command::new("clear").status().expect("couldn't");
     let cl = setup_command_line();
-    cl.input_cycle();
+    cl.input_cycle(); */
+    debug();
 }
 
 // hooks up functions and commands
@@ -41,4 +42,9 @@ fn setup_command_line() -> CommandLine {
     cl.command_list.push(clear_command);
     cl.command_list.push(help_command);
     cl
+}
+
+fn debug() {
+    let result = command_functions::command_functions::quickroll(20);
+    println!("{}", result);
 }

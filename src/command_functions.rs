@@ -27,12 +27,45 @@ pub mod command_functions {
 			thread::sleep(time::Duration::from_millis(i * 30));
 			i += 1;
 		}
-		let final_result = rand::thread_rng().gen_range(1..=n); // generate random integer between 1 and 20
+		let final_result = rand::thread_rng().gen_range(1..=n); // generate random integer between 1 and n
 		println!("{} {} {} {}                 ",
 		"result: ".blue().bold(),
 		"[".white().bold(),
 		dynamic_color(final_result, n),
 		"]".white().bold());
+	}
+
+	// A clone of rolln that has less delay. It's to be used in multi rolling and advantage cases.
+	// Since it is only used internally, it doesn't need to parse arguments or be public.
+	// Since it is used internally by other functions, it has to return the rolled number.
+	// during debug it is public, but I'll change that for release.
+	pub fn quickroll(n: u64) -> u64 {
+		print!("{}\r", "rolling...".black());
+		std::io::stdout().flush().expect("couldn't flush the display");
+		thread::sleep(time::Duration::from_millis(50));
+		let mut target: u64 = rand::thread_rng().gen_range((n / 5)..=n);
+		if target > 30 { // cap the number of re-rolls at 30 so we can safely roll a d100
+			target = 30;
+		}
+		let mut i :u64 = 0;
+		while i <= target {
+			let temp_result = rand::thread_rng().gen_range(1..=n);
+			print!("{} {} {} {}           \r",
+			"rolling...".black(),
+			"[".white().dimmed(),
+			dynamic_color(temp_result, n), // pass n as max
+			"]".white().dimmed());
+			std::io::stdout().flush().expect("couldn't flush the display");
+			thread::sleep(time::Duration::from_millis(i * 10));
+			i += 1;
+		}
+		let final_result = rand::thread_rng().gen_range(1..=n); // generate random integer between 1 and n
+		println!("{} {} {} {}                 ",
+		"sub-result: ".black().bold(),
+		"[".white().dimmed(),
+		dynamic_color(final_result, n).dimmed(),
+		"]".white().dimmed());
+		final_result // return
 	}
 
 	pub fn dynamic_color(roll: u64, max: u64) -> String {
@@ -74,4 +107,5 @@ pub mod command_functions {
 {2:^13}|     it defaults to a d20.", "roll".bold().green(), "n".bold().blue(), "");
 
 	}
+
 }
