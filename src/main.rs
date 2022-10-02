@@ -45,6 +45,5 @@ fn setup_command_line() -> CommandLine {
 }
 
 fn debug() {
-    let result = command_functions::command_functions::quickroll(20);
-    println!("{}", result);
+    command_functions::command_functions::roll_with_advantage_state(8, String::from("adv"));
 }

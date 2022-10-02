@@ -38,8 +38,7 @@ pub mod command_functions {
 	// A clone of rolln that has less delay. It's to be used in multi rolling and advantage cases.
 	// Since it is only used internally, it doesn't need to parse arguments or be public.
 	// Since it is used internally by other functions, it has to return the rolled number.
-	// during debug it is public, but I'll change that for release.
-	pub fn quickroll(n: u64) -> u64 {
+	fn quickroll(n: u64) -> u64 {
 		print!("{}\r", "rolling...".black());
 		std::io::stdout().flush().expect("couldn't flush the display");
 		thread::sleep(time::Duration::from_millis(50));
@@ -67,6 +66,42 @@ pub mod command_functions {
 		"]".white().dimmed());
 		final_result // return
 	}
+
+	pub fn roll_with_advantage_state(size_dice: u64, mut adv_state: String) {
+		adv_state = adv_state.to_lowercase();
+		assert!(adv_state == String::from("adv") || adv_state == String::from("dis"));
+		if adv_state == String::from("adv") {
+			let roll_a = quickroll(size_dice);
+			let roll_b = quickroll(size_dice);
+			let kept_roll;
+			if roll_a >= roll_b { kept_roll = roll_a; }
+			else { kept_roll = roll_b; }
+			println!("{} {}{}{} {} {} {}",
+		"result".bold().blue(),
+		"(".bold().blue(),
+		"advantage".green(),
+		"):".bold().blue(),
+		"[".bold().white(),
+		dynamic_color(kept_roll, size_dice),
+		"]".bold().white());
+		}
+		else if adv_state == String::from("dis") {
+			let roll_a = quickroll(size_dice);
+			let roll_b = quickroll(size_dice);
+			let kept_roll;
+			if roll_a <= roll_b { kept_roll = roll_a; }
+			else { kept_roll = roll_b; }
+			println!("{} {}{}{} {} {} {}",
+		"result".bold().blue(),
+		"(".bold().blue(),
+		"disadvantage".red(),
+		"):".bold().blue(),
+		"[".bold().white(),
+		dynamic_color(kept_roll, size_dice),
+		"]".bold().white());
+		}
+	}
+	
 
 	pub fn dynamic_color(roll: u64, max: u64) -> String {
 		if roll == 1 { // nat 1
