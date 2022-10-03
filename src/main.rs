@@ -18,7 +18,7 @@ fn setup_command_line() -> CommandLine {
     let mut cl = CommandLine {
         command_list: Vec::new(),
         arg_command_list: Vec::new(),
-        prompt: String::from("> "),
+        prompt: String::from(" > "),
     };
     // instantiate the commands
     let mut roll_n_default_args = Vec::new();
