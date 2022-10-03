@@ -43,7 +43,3 @@ fn setup_command_line() -> CommandLine {
     cl.command_list.push(help_command);
     cl
 }
-
-fn debug() {
-    command_functions::command_functions::roll_with_advantage_state(8, String::from("adv"));
-}
