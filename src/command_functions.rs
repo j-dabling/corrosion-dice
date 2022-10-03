@@ -153,18 +153,27 @@ pub mod command_functions {
 	}
 
 	pub fn display_help() {
-		println!("{0:^13}|   {1:^20}   ", "Command".bold().magenta(), "Purpose".bold().magenta());
-		println!("{0:^13}|", "");
-		println!("{0:^13}|  clears the screen.", "clear".bold().green());
-		println!("{0:^13}|", "");
-		println!("{0:^13}|  exits the program. \"{1}\" will also work.", "exit".bold().green(), "quit".bold().green());
-		println!("{0:^13}|", "");
-		println!("{0:^13}|  displays this incredibly helpful screen.", "help".bold().green());
-		println!("{0:^13}|", "");
-		println!("{0:>8} {1:<4}|  rolls a die with {1} sides.
-{2:^13}|     If no arguments are provided (i.e. you type \"roll\\n\"),
-{2:^13}|     it defaults to a d20.", "roll".bold().green(), "n".bold().blue(), "");
+		println!("{0:^16}|{1:^23}   ", "Command".bold().magenta(), "Purpose".bold().magenta());
+		println!("{0:^16}|", "");
+		println!("{0:^16}|  clears the screen.", "clear".bold().green());
+		println!("{0:^16}|", "");
+		println!("{0:^16}|  exits the program. \"{1}\" will also work.", "exit".bold().green(), "quit".bold().green());
+		println!("{0:^16}|", "");
+		println!("{0:^16}|  displays this incredibly helpful screen.", "help".bold().green());
+		println!("{0:^16}|", "");
+		println!("{0} {4} {2:<3} |  The main event: rolls a die (i.e. selects a random number 
+{3:^16}|     between 1 and {1}). Both {1} and {2} are optional. 
+{3:^16}|     {1} represents the size of the die you are rolling,
+{3:^16}|     and {2} represents the advantage state of the roll.
+{3:^16}|     {2} can be either `adv` or `dis`, representing
+{3:^16}|     advantage or disadvantage, respectively.",
+"roll".bold().green(), "[n]".bold().blue(), "[a]".bold().yellow(), "", "[n=20]".bold().blue());
 
+	}
+
+	pub fn welcome() {
+		println!("{}\nType {} to get started or {} for more information.", 
+		" == Welcome to corrosion-dice! == ".bold().truecolor(150, 150, 150), "roll".green(), "help".green())
 	}
 
 }

@@ -2,7 +2,7 @@ mod command_line;
 mod command_functions;
 use command_line::command::{Command, ArgCommand};
 use command_line::command_line::CommandLine;
-use command_functions::command_functions::{rolln, clear, display_help};
+use command_functions::command_functions::{rolln, clear, display_help, welcome};
 
 fn main() {
      // clear the display initially
@@ -41,5 +41,7 @@ fn setup_command_line() -> CommandLine {
     cl.arg_command_list.push(roll_command);
     cl.command_list.push(clear_command);
     cl.command_list.push(help_command);
+    // welcome the user
+    welcome();
     cl
 }
