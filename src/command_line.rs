@@ -76,6 +76,14 @@ use colored::Colorize;
 			// user_input is now "<whatever_the_user_entered>\n"
 			//strip the trailing newline
 			user_input.pop();
+			// strip any trailing spaces
+			loop {
+				let check_char = user_input.pop().unwrap();
+				if check_char != ' ' {
+					user_input.push(check_char);
+					break;
+				}
+			}
 			// Now just "<whatever_the_user_entered>"
 			user_input
 		}
@@ -114,7 +122,7 @@ use colored::Colorize;
 					}
 				}
 				if !command_found {
-					println!("{}", "command not found".red())
+					println!("{} command not found", "ERROR:".bold().italic().red());
 				}
 			}
 		}

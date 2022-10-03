@@ -6,8 +6,32 @@ pub mod command_functions {
 	// Roll a number between 1 and n, passed in as args[1]
 	pub fn rolln(args: Vec<String>) {
 		assert!(args.len() > 1); // We need to make sure that our vector is big enough
-		let n_string = &args[1]; 
-		let n = n_string.parse().unwrap();
+		let n_string = &args[1];
+		
+		// If they just type `roll dis` or similar
+		if args.len() == 2 {
+			if args[1] == String::from("dis") || args[1] == String::from("adv") {
+				roll_with_advantage_state(20, args[1].clone());
+				return;
+			}
+		}
+		// check if args[1] is a number argument
+		// stolen from: https://turreta.com/2019/09/13/rust-how-to-check-if-a-string-is-numeric/
+		for char in n_string.chars() {
+			if !char.is_numeric() {
+				return;
+			}
+			if char == ' ' {
+				return;
+			}
+		}
+		let n = n_string.parse::<u64>().expect(&(format!("{} argument is not a number", "ERROR:".bold().italic().red())));
+		if args.len() > 2 {
+			if args[2] == String::from("dis") || args[2] == String::from("adv") {
+				roll_with_advantage_state(n, args[2].clone());
+				return;
+			}
+		}
 		print!("{}\r", "rolling...".black());
 		std::io::stdout().flush().expect("couldn't flush the display");
 		thread::sleep(time::Duration::from_millis(500));
