@@ -162,13 +162,12 @@ pub mod command_functions {
 		println!("{0:^16}|  displays this incredibly helpful screen.", "help".bold().green());
 		println!("{0:^16}|", "");
 		println!("{0} {4} {2:<3} |  The main event: rolls a die (i.e. selects a random number 
-{3:^16}|     between 1 and {1}). Both {1} and {2} are optional. 
-{3:^16}|     {1} represents the size of the die you are rolling,
-{3:^16}|     and {2} represents the advantage state of the roll.
-{3:^16}|     {2} can be either `adv` or `dis`, representing
-{3:^16}|     advantage or disadvantage, respectively.",
-"roll".bold().green(), "[n]".bold().blue(), "[a]".bold().yellow(), "", "[n=20]".bold().blue());
-
+			{3:^16}|     between 1 and {1}). Both {1} and {2} are optional. 
+			{3:^16}|     {1} represents the size of the die you are rolling,
+			{3:^16}|     and {2} represents the advantage state of the roll.
+			{3:^16}|     {2} can be either `adv` or `dis`, representing
+			{3:^16}|     advantage or disadvantage, respectively.",
+			"roll".bold().green(), "[n]".bold().blue(), "[a]".bold().yellow(), "", "[n=20]".bold().blue());
 	}
 
 	pub fn welcome() {
