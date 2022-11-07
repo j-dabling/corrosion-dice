@@ -1,10 +1,17 @@
 mod command_line;
 mod command_functions;
+mod corrosion_server;
 use command_line::command::{Command, ArgCommand};
 use command_line::command_line::CommandLine;
 use command_functions::command_functions::{rolln, clear, display_help, welcome};
+use corrosion_server::start_corrosion_server;
+use std::thread;
+// use corrosion_server;
 
 fn main() {
+    // Spawns the server process and begins listening for inputs on port 3333.
+    thread::spawn(move || start_corrosion_server());
+
      // clear the display initially
     std::process::Command::new("clear").status().expect("couldn't");
     let cl = setup_command_line();

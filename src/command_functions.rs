@@ -1,6 +1,10 @@
 pub mod command_functions {
+	use std::net::TcpStream;
+	use std::str::from_utf8;
+	use serde;
+
 	use std::{thread, time};
-	use std::io::Write;
+	use std::io::{Read, Write};
 	use rand::Rng;
 	use colored::Colorize;
 	// Roll a number between 1 and n, passed in as args[1]
@@ -52,11 +56,20 @@ pub mod command_functions {
 			i += 1;
 		}
 		let final_result = rand::thread_rng().gen_range(1..=n); // generate random integer between 1 and n
-		println!("{} {} {} {}                 ",
-		"result: ".blue().bold(),
-		"[".white().bold(),
-		dynamic_color(final_result, n),
-		"]".white().bold());
+		let result_msg: String = format!("{} {} {} {}                 ",
+			"result: ".blue().bold(),
+			"[".white().bold(),
+			dynamic_color(final_result, n),
+			"]".white().bold());
+		println!("{}", result_msg);
+		// send_to_server(result_msg);
+		send_to_server(final_result);
+		// println!("{} {} {} {}                 ",
+		// "result: ".blue().bold(),
+		// "[".white().bold(),
+		// dynamic_color(final_result, n),
+		// "]".white().bold());
+		// send_to_server();
 	}
 
 	// A clone of rolln that has less delay. It's to be used in multi rolling and advantage cases.
@@ -173,6 +186,38 @@ pub mod command_functions {
 	pub fn welcome() {
 		println!("{}\nType {} to get started or {} for more information.", 
 		" == Welcome to corrosion-dice! == ".bold().truecolor(150, 150, 150), "roll".green(), "help".green())
+	}
+
+	fn send_to_server(result: u8) {
+		match TcpStream::connect("localhost:3333") {
+			Ok(mut stream) => {
+				println!("Successfully connected to server in port 3333");
+				
+				let msg = b"Hello!";
+
+				stream.write(msg).unwrap();
+				println!("Sent Hello, awaiting reply...");
+
+				let mut data = [0 as u8; 6]; // using 6 byte buffer
+				match stream.read_exact(&mut data) {
+					Ok(_) => {
+						if &data == msg {
+							println!("Reply is ok!");
+						} else {
+							let text = from_utf8(&data).unwrap();
+							println!("Unexpected reply: {}", text);
+						}
+					},
+					Err(e) => {
+						println!("Failed to receive data: {}", e);
+					}
+				}
+			},
+			Err(e) => {
+				println!("Failed to connect: {}", e);
+			}
+		}
+		println!("Terminated.");
 	}
 
 }
