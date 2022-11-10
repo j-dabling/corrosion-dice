@@ -1,12 +1,16 @@
 use std::io;
-use std::io::{Write};
+use std::io::Write;
+use std::str::FromStr;
 use std::{thread, time};
-use std::net::TcpStream;
+use std::net::{Ipv4Addr, TcpStream};
 
 use rand::Rng;
 use colored::Colorize;
 
 use crate::lines_codec::LinesCodec;
+
+static mut addr: Ipv4Addr = Ipv4Addr::new(127, 0, 0, 1);
+static mut connect_to_server: bool = false;
 
 // Roll a number between 1 and n, passed in as args[1]
 pub fn rolln(args: Vec<String>) {
@@ -65,14 +69,13 @@ pub fn rolln(args: Vec<String>) {
 	println!("{}", result_msg);
 	// send_to_server(result_msg);
 	let server_msg : String = format!("{{\"name\":\"test\",\"roll\":{},\"n\":{}}}", final_result, n);
-	send_to_server(&server_msg)
-		.expect("Could not send roll result to peers.");
-	// println!("{} {} {} {}                 ",
-	// "result: ".blue().bold(),
-	// "[".white().bold(),
-	// dynamic_color(final_result, n),
-	// "]".white().bold());
-	// send_to_server();
+
+	unsafe {
+		if connect_to_server {
+			send_to_server(&server_msg)
+				.expect("Could not send roll result to peers.");
+		}
+	}
 }
 
 // A clone of rolln that has less delay. It's to be used in multi rolling and advantage cases.
@@ -187,6 +190,17 @@ pub fn display_help() {
 }
 
 pub fn welcome() {
+	let mut addr_str = String::new();
+	println!("Do you want to connect to another corrosion-dice client? [Enter IP or ENTER to continue without connecting.]");
+	println!("ex. 127.0.0.1");
+	io::stdin().read_line(&mut addr_str).expect("Could not read input.");
+	if let Ok(test_addr) = addr_str.trim().parse::<Ipv4Addr>() {
+		unsafe {
+			addr = test_addr;
+			connect_to_server = true;
+		}
+	}
+
 	println!("{}\nType {} to get started or {} for more information.", 
 	" == Welcome to corrosion-dice! == ".bold().truecolor(150, 150, 150), "roll".green(), "help".green())
 }
