@@ -1,16 +1,17 @@
-mod command_line;
-mod command_functions;
-mod corrosion_server;
-use command_line::command::{Command, ArgCommand};
-use command_line::command_line::CommandLine;
-use command_functions::command_functions::{rolln, clear, display_help, welcome};
-use corrosion_server::start_corrosion_server;
+mod cli;
+mod lines_codec;
+
 use std::thread;
-// use corrosion_server;
+
+use crate::cli::command_line::CommandLine;
+use crate::cli::command::{ArgCommand, Command};
+use crate::cli::command_functions::{rolln, clear, display_help, welcome};
+
+use crate::lines_codec::server::start_corrosion_server;
 
 fn main() {
     // Spawns the server process and begins listening for inputs on port 3333.
-    thread::spawn(move || start_corrosion_server());
+    thread::spawn(move || start_corrosion_server(Some("127.0.0.1:4000")));
 
      // clear the display initially
     std::process::Command::new("clear").status().expect("couldn't");
