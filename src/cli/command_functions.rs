@@ -2,7 +2,7 @@ use std::io;
 use std::io::Write;
 use std::str::FromStr;
 use std::{thread, time};
-use std::net::{Ipv4Addr, TcpStream};
+use std::net::{IpAddr, Ipv4Addr, TcpStream, SocketAddr};
 
 use rand::Rng;
 use colored::Colorize;
@@ -206,15 +206,18 @@ pub fn welcome() {
 }
 
 fn send_to_server(message: &str) -> io::Result<()> {
-	let stream = TcpStream::connect("localhost:4000")?;
+	// Entire function is unsafe because of reliance on mutable static 'addr'.
+	unsafe {
+		let stream = TcpStream::connect(SocketAddr::new(IpAddr::V4(addr), 4000))?;
 
-	// let mut codec = LinesCodec::new(stream)?;
-	let mut codec = LinesCodec::new(stream)?;
+		// let mut codec = LinesCodec::new(stream)?;
+		let mut codec = LinesCodec::new(stream)?;
 
-	// codec.send_message("Hello")?;
-	codec.send_message(&message)
-		.expect("Could not send message as expected.");
+		// codec.send_message("Hello")?;
+		codec.send_message(&message)
+			.expect("Could not send message as expected.");
 
-	println!("{}", codec.read_message()?);
-	Ok(())
+		println!("{}", codec.read_message()?);
+		Ok(())
+	}
 }
