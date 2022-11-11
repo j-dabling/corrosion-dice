@@ -1,6 +1,6 @@
 use std::io;
 use std::io::Write;
-use std::str::FromStr;
+// use std::str::FromStr;
 use std::{thread, time};
 use std::net::{IpAddr, Ipv4Addr, TcpStream, SocketAddr};
 
@@ -9,8 +9,8 @@ use colored::Colorize;
 
 use crate::lines_codec::LinesCodec;
 
-static mut addr: Ipv4Addr = Ipv4Addr::new(127, 0, 0, 1);
-static mut connect_to_server: bool = false;
+static mut ADDR: Ipv4Addr = Ipv4Addr::new(127, 0, 0, 1);
+static mut CONNECT_TO_SERVER: bool = false;
 
 // Roll a number between 1 and n, passed in as args[1]
 pub fn rolln(args: Vec<String>) {
@@ -71,7 +71,7 @@ pub fn rolln(args: Vec<String>) {
 	let server_msg : String = format!("{{\"name\":\"test\",\"roll\":{},\"n\":{}}}", final_result, n);
 
 	unsafe {
-		if connect_to_server {
+		if CONNECT_TO_SERVER {
 			send_to_server(&server_msg)
 				.expect("Could not send roll result to peers.");
 		}
@@ -196,8 +196,8 @@ pub fn welcome() {
 	io::stdin().read_line(&mut addr_str).expect("Could not read input.");
 	if let Ok(test_addr) = addr_str.trim().parse::<Ipv4Addr>() {
 		unsafe {
-			addr = test_addr;
-			connect_to_server = true;
+			ADDR = test_addr;
+			CONNECT_TO_SERVER = true;
 		}
 	}
 
@@ -208,7 +208,7 @@ pub fn welcome() {
 fn send_to_server(message: &str) -> io::Result<()> {
 	// Entire function is unsafe because of reliance on mutable static 'addr'.
 	unsafe {
-		let stream = TcpStream::connect(SocketAddr::new(IpAddr::V4(addr), 4000))?;
+		let stream = TcpStream::connect(SocketAddr::new(IpAddr::V4(ADDR), 4000))?;
 
 		// let mut codec = LinesCodec::new(stream)?;
 		let mut codec = LinesCodec::new(stream)?;
